@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>TODO</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<link rel="stylesheet" href="main.css">
+<body>
+<div class="wrap">
+<header class="header">
+	<h1 class="header__caption">todos</h1>
+	<input class="header__new-item" type="text" placeholder="What needs to be done?" autofocus>
+</header>
+	<section class="main">
+	<input type="checkbox" id="select-all" class="select-all">
+	<label for="select-all"></label>
+	<ul class="todo-list">
+	<li class="todo-list__item">
+		<div class="content-wrap">
+		<input class="complete" type="checkbox">
+		<label></label>
+		<button class="destroy"></button>
+		</div>
+		</li> 
+	</ul>
+	</section>
+<footer class="footer">
+	<div class="footer-wrapper">
+	<span class="counter">
+		<strong></strong>
+	</span>
+	<ul class="filters">
+		<li>
+			<input type="radio" name = "group" class="filter"  id="all"/>
+			<label for="all" class="all">All</label>
+		</li>
+		<li>
+			<input type="radio" name = "group" class="filter"  id="active"/>
+			<label for="active" class="all">Active</label>
+		</li>
+		<li>
+			<input type="radio" name = "group" class="filter"  id="completed"/>
+			<label for="completed" class="all">Completed</label>
+		</li>
+	</ul>
+	<button class="clear-completed" >Clear completed</button>
+	</div>
+</footer>
+</div>
+<script src="general.js"></script>	
+</body>
+</html>
