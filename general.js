@@ -109,7 +109,11 @@ todoList.addEventListener('dblclick', changeTodoItem = event => {
 				}
 				saveToStorage();
 
-			} else {removeTodoItem(parentLi); saveToStorage();}  
+			} else {
+				event.type == 'keydown'? newInput.removeEventListener('blur', changeItemBlur): console.log('no');
+				removeTodoItem(parentLi); 
+				saveToStorage();
+				}  
 			}
 				return; 
 		}
