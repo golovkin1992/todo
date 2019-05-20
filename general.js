@@ -94,7 +94,7 @@ function handleTodoListDblClick(event) {
 		let parentLi = event.target.parentNode.parentNode;
 		let newInput = document.createElement('INPUT');
 		parentLi.classList.add('js-editing');
-		newInput.className = 'edit';
+		newInput.className = 'js-edit';
 		newInput.value = labelValue;
 		parentLi.appendChild(newInput);
 		newInput.focus();
