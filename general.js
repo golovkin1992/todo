@@ -1,11 +1,11 @@
-let newTodo = document.querySelector('INPUT');
-let todoList = document.querySelector('UL');
-let firstLi = document.querySelectorAll('LI')[0];
-let mainBlock = document.querySelector('.main');
-let footer = document.querySelector('.footer');
-let filters = document.querySelector('.filters');
-let btnClearCompleted = document.querySelector('.clear-completed');
-let btnToggleAll = document.querySelector('.select-all');
+let newTodo = document.querySelector('.js-header__new-item');
+let todoList = document.querySelector('.js-todo-list');
+let firstLi = document.querySelectorAll('.js-todo-list__item')[0];
+let mainBlock = document.querySelector('.js-main');
+let footer = document.querySelector('.js-footer');
+let filters = document.querySelector('.js-filters');
+let btnClearCompleted = document.querySelector('.js-clear-completed');
+let btnToggleAll = document.querySelector('.js-select-all');
 footer.hidden = true;
 mainBlock.hidden = true;
 btnClearCompleted.hidden = true;
@@ -26,7 +26,7 @@ function ready() {
 		firstLi.hidden = false;
 		for (let i = 0; i < arrayTodo.length; i++) {
 			let newLi = firstLi.cloneNode(true);
-			let isComplete = arrayTodo[i].isComplete ? true: false;
+			let isComplete = arrayTodo[i].isComplete;
 			if (isComplete) newLi.children[0].children[0].checked = true;
 				newLi.setAttribute('id', arrayTodo[i].id );
 				newLi.querySelector('label').innerHTML = arrayTodo[i].text.trim();
@@ -35,13 +35,17 @@ function ready() {
 
 		mainBlock.hidden = false;
 		footer.hidden = false;
-		filter !== null ? setFilter(filter) : setFilter('all');
+		setFilter(filter);
 		firstLi.hidden = true;
 		count = initCounter();
 		
 		} else {
 			arrayTodo = [];
-			count = {total:0,active:0,completed:0};
+			count = {	
+					total: 0,
+					active: 0,
+					completed: 0
+					};
 			setFilter('all');
 			mainBlock.hidden = true;
 			footer.hidden = true;
@@ -50,16 +54,24 @@ function ready() {
 };
 
 function addEventListeners() {
-	newTodo.addEventListener('blur', handleBlurKeyDownNewTodo); 
-	newTodo.addEventListener('keydown', handleBlurKeyDownNewTodo);
-	todoList.addEventListener('dblclick', handleOnDblClickTodoList);
-	todoList.addEventListener('click', handleOnClickTodoList);
-	btnToggleAll.addEventListener('click', handleOnClickToggleAll);
-	btnClearCompleted.addEventListener('click', handleOnClickClearCompleted);
-	filters.addEventListener('click', handleOnClickFilters);
+	newTodo.addEventListener('blur', handleBlur); 
+	newTodo.addEventListener('keydown', handleKeyDown);
+	todoList.addEventListener('dblclick', handleTodoListDblClick);
+	todoList.addEventListener('click', handleTodoListClick);
+	btnToggleAll.addEventListener('click', handleToggleAllClick);
+	btnClearCompleted.addEventListener('click', handleClearCompletedClick);
+	filters.addEventListener('click', handleFiltersClick);
 };
 
-function handleBlurKeyDownNewTodo(event) {
+function handleBlur(event) {
+	createNewItem(event);
+};
+
+function handleKeyDown(event) {
+	createNewItem(event);
+};
+
+function createNewItem() {
 	if ((event.keyCode === 13 || !event.keyCode) && newTodo.value !== '') {
 		firstLi.hidden = false;
 		let newLi = firstLi.cloneNode(true);
@@ -76,7 +88,7 @@ function handleBlurKeyDownNewTodo(event) {
 		} else return ;
 	}; 
 
-function handleOnDblClickTodoList(event) {
+function handleTodoListDblClick(event) {
 	if (event.target.localName === 'label') {
 		let labelValue = event.target.innerHTML;
 		let parentLi = event.target.parentNode.parentNode;
@@ -86,10 +98,10 @@ function handleOnDblClickTodoList(event) {
 		newInput.value = labelValue;
 		parentLi.appendChild(newInput);
 		newInput.focus();
-		newInput.addEventListener('keydown', handleOnKeyDownNewInput);
-		newInput.addEventListener('blur',  handleOnBlurNewInput);
+		newInput.addEventListener('keydown', handleNewInputKeyDown);
+		newInput.addEventListener('blur',  handleNewInputBlur);
 		
-		function handleOnBlurNewInput(event) {
+		function handleNewInputBlur(event) {
 			if (newInput.value !== '') {	
 				parentLi.classList.remove('js-editing');
 				let changeLabel = this.previousElementSibling.children[1];
@@ -109,11 +121,11 @@ function handleOnDblClickTodoList(event) {
 				}	
 		}
 
-		function handleOnKeyDownNewInput(event) {
+		function handleNewInputKeyDown(event) {
 			if (event.keyCode === 13 || !event.keyCode) {
 				if (newInput.value !== '') {	
 					parentLi.classList.remove('js-editing');
-					if (event.type === 'keydown') newInput.removeEventListener('blur', changeItemBlur);
+					if (event.type === 'keydown') newInput.removeEventListener('blur', handleNewInputBlur);
 					let changeLabel = this.previousElementSibling.children[1];
 					changeLabel.innerHTML = newInput.value;
 					parentLi.removeChild(newInput);
@@ -126,7 +138,7 @@ function handleOnDblClickTodoList(event) {
 				}
 				saveToStorage();
 			} else {
-				if (event.type === 'keydown') newInput.removeEventListener('blur', changeItemBlur);
+				if (event.type === 'keydown') newInput.removeEventListener('blur', handleNewInputBlur);
 					removeTodoItem(parentLi); 
 					saveToStorage();
 				}  
@@ -136,7 +148,7 @@ function handleOnDblClickTodoList(event) {
 	}
 };
 
-function handleOnClickToggleAll(event) {
+function handleToggleAllClick(event) {
 	let complete = document.querySelectorAll('.complete');
 	if (event.target.checked) {
 		for (let i = 1; i < arrayTodo.length+1; i++) {
@@ -166,7 +178,7 @@ function handleOnClickToggleAll(event) {
 	setFilter(filter);
 }
 
-function handleOnClickTodoList(event) {
+function handleTodoListClick(event) {
 	if (event.target.classList.contains('complete')) {
 		let parentLi = event.target.parentNode.parentNode;
 		let currentID = +parentLi.getAttribute('id');
@@ -184,8 +196,8 @@ function handleOnClickTodoList(event) {
 			}	
 		showHideLi(parentLi, true);
 		updateCounter(parentLi, false);
-		count.completed > 0 ? btnClearCompleted.hidden = false : btnClearCompleted.hidden = true;
-		count.active == 0 ? btnToggleAll.checked = true : false;
+		btnClearCompleted.hidden = count.completed <= 0;
+		btnToggleAll.checked = count.active === 0;
 		saveToStorage(); 
 	}
 	if (event.target.classList.contains('destroy')) {
@@ -194,7 +206,7 @@ function handleOnClickTodoList(event) {
 	}
 }
 
-function handleOnClickClearCompleted(event) {
+function handleClearCompletedClick(event) {
 	let totalCount = arrayTodo.length;
 	let complete = document.querySelectorAll('.complete');
 		for (let i = 0; i <= totalCount; i++) {
@@ -204,14 +216,15 @@ function handleOnClickClearCompleted(event) {
 			}
 		}
 	btnToggleAll.checked = false;
-	count.completed > 0 ? btnClearCompleted.hidden = false : btnClearCompleted.hidden = true;
+	btnClearCompleted.hidden = count.completed <= 0;
 }
 
-function handleOnClickFilters(event) {
+function handleFiltersClick(event) {
 	if (event.target.classList.contains('filter')) {
 		setFilter(String(event.target.id));
 	}
 };
+
 function removeTodoItem(removeLi) {
 	let currentID = +removeLi.getAttribute('id');
 		for (let i = 0; i < arrayTodo.length; i++) {
@@ -220,8 +233,8 @@ function removeTodoItem(removeLi) {
 				break;
 			}
 		}
-		arrayTodo.length === 0 ? footer.hidden = true : false;
-		arrayTodo.length === 0 ? mainBlock.hidden = true : false;
+		footer.hidden =	arrayTodo.length === 0;
+		mainBlock.hidden = arrayTodo.length === 0;
 		saveToStorage();
 		updateCounter(removeLi, true);
 		todoList.removeChild(removeLi);
@@ -254,8 +267,8 @@ function showHideLi(currentLi, check) {
 				currentLi.hidden = true;
 			};
 			if (filtersNodeList[i].id === 'active') {
-				!check ? currentLi.hidden = false : currentLi.hidden = true;
-			};
+				currentLi.hidden = check;
+			}
 		}
 	}
 };
@@ -277,8 +290,8 @@ function setFilter(filterName) {
 		for (let i = 0; i < todoList.childElementCount-1; i++) {
 			let checked = arrayTodo[i].isComplete;
 			if (!checked) {
-				todoList.children[i+1].hidden = false;
-			} else todoList.children[i+1].hidden = true;
+				todoList.children[i+1].hidden = checked;
+			} else todoList.children[i+1].hidden = checked;
 		} 
 	} 
 
@@ -286,8 +299,8 @@ function setFilter(filterName) {
 		for (let i = 0; i < todoList.childElementCount-1; i++) {
 			let checked = arrayTodo[i].isComplete;
 			if (checked) {
-				todoList.children[i+1].hidden = false;
-			} else todoList.children[i+1].hidden = true;
+				todoList.children[i+1].hidden = !checked;
+			} else todoList.children[i+1].hidden = !checked;
 		}
 	} 
 
@@ -308,7 +321,7 @@ function initCounter () {
 		};
 	let labelCounter = document.querySelector('strong');
 	let itemsTextContent = '';
-	count.completed > 0 ? btnClearCompleted.hidden = false  : btnClearCompleted.hidden = true;
+	btnClearCompleted.hidden = count.completed <= 0;
 	count.active > 1 ? itemsTextContent = ' items left' : itemsTextContent =' item left';
 	labelCounter.innerHTML = count.active + itemsTextContent;
 	return count;
@@ -344,7 +357,7 @@ function updateCounter(parentLi, remove, add) {
 					}
 	currentCount.active > 1 ? itemsTextContent =  ' items left' : itemsTextContent =' item left';
 	labelCounter.innerHTML = currentCount.active + itemsTextContent;
-	count.completed > 0 ? btnClearCompleted.hidden = false : btnClearCompleted.hidden = true;
+	btnClearCompleted.hidden = count.completed <= 0;
 }
 
 

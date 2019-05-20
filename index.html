@@ -10,13 +10,13 @@
 <div class="wrap">
 <header class="header">
 	<h1 class="header__caption">todos</h1>
-	<input class="header__new-item" type="text" placeholder="What needs to be done?" autofocus>
+	<input class="js-header__new-item" type="text" placeholder="What needs to be done?" autofocus>
 </header>
-	<section class="main">
-	<input type="checkbox" id="select-all" class="select-all">
-	<label for="select-all"></label>
-	<ul class="todo-list">
-	<li class="todo-list__item">
+	<section class="js-main">
+	<input type="checkbox" id="js-select-all" class="js-select-all">
+	<label for="js-select-all"></label>
+	<ul class="js-todo-list">
+	<li class="js-todo-list__item">
 		<div class="content-wrap">
 		<input class="complete" type="checkbox">
 		<label></label>
@@ -25,12 +25,12 @@
 		</li> 
 	</ul>
 	</section>
-<footer class="footer">
+<footer class="js-footer">
 	<div class="footer-wrapper">
 	<span class="counter">
 		<strong></strong>
 	</span>
-	<ul class="filters">
+	<ul class="js-filters">
 		<li>
 			<input type="radio" name = "group" class="filter"  id="all"/>
 			<label for="all" class="all">All</label>
@@ -44,7 +44,7 @@
 			<label for="completed" class="all">Completed</label>
 		</li>
 	</ul>
-	<button class="clear-completed" >Clear completed</button>
+	<button class="js-clear-completed" >Clear completed</button>
 	</div>
 </footer>
 </div>

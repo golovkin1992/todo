@@ -1,4 +1,4 @@
-﻿@charset "UTF-8";
+@charset "UTF-8";
 body {
   max-width: 1920px;
   min-width: 320px;
@@ -26,7 +26,8 @@ body {
   color: rgba(175, 47, 47, 0.15);
   margin: 0;
 }
-.header__new-item {
+
+.js-header__new-item {
   width: 100%;
   padding: 16px 16px 16px 60px;
   border: none;
@@ -37,22 +38,22 @@ body {
   font-size: 24px;
   background-color: #fff;
 }
-.header__new-item:focus {
+.js-header__new-item:focus {
   outline: none;
 }
 
-.todo-list {
+.js-todo-list {
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
-.main {
+.js-main {
   position: relative;
   border-top: 1px solid #e6e6e6;
 }
 
-.select-all {
+.js-select-all {
   width: 1px;
   height: 1px;
   border: none;
@@ -61,7 +62,7 @@ body {
   right: 100%;
   bottom: 100%;
 }
-.select-all + label {
+.js-select-all + label {
   width: 60px;
   padding: 0;
   height: 34px;
@@ -70,18 +71,18 @@ body {
   top: -52px;
   transform: rotate(90deg);
 }
-.select-all + label:before {
+.js-select-all + label:before {
   content: "❯";
   font-size: 26px;
   color: #e6e6e6;
   padding: 12px 27px 1px 27px;
 }
 
-.select-all:checked + label:before {
+.js-select-all:checked + label:before {
   color: #737373;
 }
 
-.footer {
+.js-footer {
   color: #777;
   padding: 10px 15px;
   height: 20px;
@@ -98,7 +99,7 @@ body {
   font-weight: normal;
 }
 
-.filters {
+.js-filters {
   list-style: none;
   margin: 0;
   padding: 0;
@@ -106,7 +107,7 @@ body {
   left: 0;
   right: 0;
 }
-.filters li {
+.js-filters li {
   display: inline;
 }
 
@@ -127,7 +128,7 @@ body {
   border-color: rgba(175, 47, 47, 0.2);
 }
 
-.clear-completed {
+.js-clear-completed {
   background: transparent;
   position: absolute;
   right: 0;
@@ -135,15 +136,15 @@ body {
   font-size: 14px;
   color: inherit;
 }
-.clear-completed:hover {
+.js-clear-completed:hover {
   text-decoration: underline;
   cursor: pointer;
 }
-.clear-completed:focus {
+.js-clear-completed:focus {
   outline: none;
 }
 
-.todo-list .js-editing label {
+.js-todo-list .js-editing label {
   display: none;
 }
 
@@ -257,11 +258,11 @@ li:hover .destroy {
   }
 }
 @media (max-width: 430px) and (min-width: 320px) {
-  .footer {
+  .js-footer {
     height: 50px;
   }
 
-  .filters {
+  .js-filters {
     bottom: 10px;
   }
 }
